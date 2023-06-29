@@ -233,14 +233,23 @@ export class AppComponent implements AfterViewInit {
     // });
 
     //this.addTextbox();
+    
   }
+  
+
   addTextbox(): void {
     if (this.stage) {
-      
+
+      this.stage.on('click', () => {
+      const layer = new Konva.Layer();
+      this.stage?.add(layer);
+
+      const pos = this.stage?.getRelativePointerPosition() ?? { x: 0, y: 0 };
+
       const textNode = new Konva.Text({
         text: 'New Textbox',
-        x: 50,
-        y: 160,
+        x: pos.x,
+        y: pos.y,
         fontSize: 20,
         fill: '#FF0000',
         padding: 7,
@@ -249,8 +258,8 @@ export class AppComponent implements AfterViewInit {
       });
 
       const rect = new Konva.Rect({
-        x: 50,
-        y: 160,
+        x: textNode.x(),
+        y: textNode.y(),
         width: textNode.width(),
         height: textNode.height(),
         fill: '#FFF753',
@@ -285,34 +294,34 @@ export class AppComponent implements AfterViewInit {
           scaleX: 1,
         });
       });
-  
+
       textNode.on('dblclick dbltap', () => {
         // hide text node and transformer:
         textNode.hide();
         tr.show();
-  
+
         // create textarea over canvas with absolute position
         // first we need to find position for textarea
         // how to find it?
-  
+
         // at first let's find the position of the text node relative to the stage:
         // Declare the textPosition variable
         let textPosition: Konva.Vector2d;
         textPosition = textNode.absolutePosition();
         const container = this.stage?.container();
         let areaPosition: { x: number, y: number } = { x: 0, y: 0 }; // Default value
-  
+
         if (container) {
           areaPosition = {
             x: container.offsetLeft + textPosition.x,
             y: container.offsetTop + textPosition.y,
           };
         }
-  
+
         // create textarea and style it
         const textarea = document.createElement('textarea');
         document.body.appendChild(textarea);
-  
+
         // apply many styles to match the text on canvas as closely as possible
         // remember that text rendering on canvas and on the textarea can be different
         // and sometimes it is hard to make them 100% the same, but we will try...
@@ -340,7 +349,7 @@ export class AppComponent implements AfterViewInit {
         if (rotation) {
           transform += 'rotateZ(' + rotation + 'deg)';
         }
-  
+
         let px = 0;
         // also, we need to slightly move the textarea on Firefox
         // because it jumps a bit
@@ -349,16 +358,16 @@ export class AppComponent implements AfterViewInit {
           px += 2 + Math.round(textNode.fontSize() / 20);
         }
         transform += 'translateY(-' + px + 'px)';
-  
+
         textarea.style.transform = transform;
-  
+
         // reset height
         textarea.style.height = 'auto';
         // after the browser resizes it, we can set the actual value
         textarea.style.height = textarea.scrollHeight + 3 + 'px';
-  
+
         textarea.focus();
-  
+
         function removeTextarea() {
           if (textarea.parentNode) {
             textarea.parentNode.removeChild(textarea);
@@ -368,7 +377,7 @@ export class AppComponent implements AfterViewInit {
             tr.forceUpdate();
           }
         }
-  
+
         function setTextareaWidth(newWidth: number) {
           if (!newWidth) {
             // set width for placeholder
@@ -380,14 +389,14 @@ export class AppComponent implements AfterViewInit {
           if (isSafari || isFirefox) {
             newWidth = Math.ceil(newWidth);
           }
-  
+
           const isEdge = document.DOCUMENT_NODE || /Edge/.test(navigator.userAgent);
           if (isEdge) {
             newWidth += 1;
           }
           textarea.style.width = newWidth + 'px';
         }
-  
+
         textarea.addEventListener('keydown', function (e) {
           // hide on enter
           // but don't hide on shift + enter
@@ -402,20 +411,20 @@ export class AppComponent implements AfterViewInit {
             tr.hide();
           }
         });
-  
+
         textarea.addEventListener('keydown', function (e) {
           const scale = textNode.getAbsoluteScale().x;
           setTextareaWidth(textNode.width() * scale);
           textNode.text(textarea.value);
           textarea.style.height = 'auto';
           textarea.style.height = textarea.scrollHeight + textNode.fontSize() + 'px';
-  
+
           rect.setAttrs({
             width: textNode.width() + textNode.padding() * 2 + 2,
             height: textNode.height() + textNode.padding() * 2 - 14
           });
         });
-  
+
         function handleOutsideClick(e: MouseEvent) {
           if (e.target !== textarea) {
             textNode.text(textarea.value);
@@ -424,17 +433,18 @@ export class AppComponent implements AfterViewInit {
             layer.batchDraw(); // Force redraw to update the stage
           }
         }
-  
+
         setTimeout(() => {
           window.addEventListener('click', handleOutsideClick);
         });
       })
 
-      const layer = this.stage.findOne('Layer') as Konva.Layer; // Type assertion
       layer.add(rect);
       layer.add(textNode);
       layer.add(tr);
       layer.batchDraw();
+    })
+    
     }
   }
 
