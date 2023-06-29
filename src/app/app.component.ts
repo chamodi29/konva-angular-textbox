@@ -9,6 +9,7 @@ import Konva from 'konva';
 export class AppComponent implements AfterViewInit {
   title: string = 'My App';
   private stage: Konva.Stage | null = null;
+  textBoxMode: boolean = false;
 
   ngAfterViewInit(): void {
     const width = window.innerWidth;
@@ -22,6 +23,10 @@ export class AppComponent implements AfterViewInit {
 
     const layer = new Konva.Layer();
     this.stage.add(layer);
+
+    this.stage.on('click', () => {
+      this.addTextbox()
+    })
 
     const textNode = new Konva.Text({
       text: 'Text ...',
@@ -233,14 +238,17 @@ export class AppComponent implements AfterViewInit {
     // });
 
     //this.addTextbox();
-    
+
   }
-  
+
+  toggleTextBoxMode(): void {
+    this.textBoxMode = !this.textBoxMode
+  }
 
   addTextbox(): void {
-    if (this.stage) {
+    if (this.stage && this.textBoxMode) {
 
-      this.stage.on('click', () => {
+      // this.stage.on('click', () => {
       const layer = new Konva.Layer();
       this.stage?.add(layer);
 
@@ -443,8 +451,10 @@ export class AppComponent implements AfterViewInit {
       layer.add(textNode);
       layer.add(tr);
       layer.batchDraw();
-    })
-    
+
+      this.textBoxMode = false;
+      // })
+
     }
   }
 
