@@ -1,10 +1,26 @@
 .container {
-    position: relative;
-  }
-  
-  .txt-button {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-  }
-  
+  position: relative;
+}
+
+.txt-button {
+  position: absolute;
+  top: 25px;
+  left: 20px;
+  background-color: gray;
+  color: white;
+ // border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+  border: 2px solid transparent;
+  border-radius: 5px;
+}
+
+.txt-button.clicked {
+  border-color: rgb(55, 162, 233);
+}
+
+.txt-button:hover {
+  background-color: rgb(167, 160, 160);
+}

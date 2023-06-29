@@ -30,8 +30,8 @@ export class AppComponent implements AfterViewInit {
 
     const textNode = new Konva.Text({
       text: 'Text ...',
-      x: 50,
-      y: 80,
+      x: 15,
+      y: 100,
       fontSize: 20,
       fill: '#FF0000',
       padding: 7,
@@ -40,8 +40,8 @@ export class AppComponent implements AfterViewInit {
     });
 
     const rect = new Konva.Rect({
-      x: 50,
-      y: 80,
+      x: 15,
+      y: 100,
       width: textNode.width(),
       height: textNode.height(),
       fill: '#FFF753',

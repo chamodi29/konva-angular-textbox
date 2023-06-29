@@ -1,3 +1,3 @@
 <div id="container"></div>
 
-<button class="txt-button" [ngStyle]="{'border-color': textBoxMode?'blue' : 'gray'}"  (click)="toggleTextBoxMode()">Add Textbox</button>
+<button class="txt-button " [ngClass]="{'clicked': textBoxMode}"  (click)="toggleTextBoxMode()">Add Textbox</button>
