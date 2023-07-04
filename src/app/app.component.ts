@@ -252,12 +252,14 @@ export class AppComponent implements AfterViewInit {
       const layer = new Konva.Layer();
       this.stage?.add(layer);
 
-      const pos = this.stage?.getRelativePointerPosition() ?? { x: 0, y: 0 };
+      const pos = this.stage?.getRelativePointerPosition() ?? { x: 0, y: 500 };
+      const yOffset = -12.5;
+      const xOffset = -80;
 
       const textNode = new Konva.Text({
         text: 'New Textbox',
-        x: pos.x,
-        y: pos.y,
+        x: pos.x + xOffset,
+        y: pos.y + yOffset,
         fontSize: 20,
         fill: '#FF0000',
         padding: 7,
